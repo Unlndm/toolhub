@@ -242,7 +242,7 @@
             document.body.style.overflow = 'hidden';
             
             if (id === 'daily-hot') loadHotPlatforms();
-            if (id === 'text-dub') loadDubRoles();
+            if (id === 'text-dub') loadDubVoices();
         }
 
         function closeModal() {
@@ -261,11 +261,11 @@
         function getToolContent(id) {
             const contents = {
                 'qq-music': `<div style="display: flex; gap: 12px; margin-bottom: 16px;"><input type="text" id="musicInput" class="input-field" placeholder="输入歌曲名或歌手..." style="flex: 1;"><button onclick="searchMusic()" class="btn btn-success"><i class="fas fa-search" style="margin-right: 6px;"></i>搜索</button></div><div id="musicResults" style="max-height: 400px; overflow-y: auto;"></div>`,
-                'short-video': `<div style="display: flex; gap: 8px; margin-bottom: 16px;"><button onclick="setPlatform('douyin')" id="douyinBtn" class="btn btn-primary" style="flex: 1;">抖音</button><button onclick="setPlatform('kuaishou')" id="kuaishouBtn" class="btn btn-secondary" style="flex: 1;">快手</button></div><div style="display: flex; gap: 12px; margin-bottom: 16px;"><input type="text" id="videoInput" class="input-field" placeholder="输入分享链接..." style="flex: 1;"><button onclick="parseVideo()" class="btn btn-primary">解析</button></div><div id="videoResults"></div>`,
-                'qrcode': `<div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">二维码内容</label><input type="text" id="qrText" class="input-field" placeholder="输入链接或文本..."></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;"><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">风格</label><select id="qrStyle" class="input-field"><option value="basic">标准</option><option value="colored">彩色</option><option value="dot">圆点</option></select></div><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">尺寸</label><select id="qrSize" class="input-field"><option value="200">200px</option><option value="300" selected>300px</option><option value="400">400px</option></select></div></div><button onclick="genQR()" class="btn btn-primary" style="width: 100%;"><i class="fas fa-qrcode" style="margin-right: 8px;"></i>生成二维码</button><div id="qrResult" style="text-align: center; margin-top: 16px;"></div>`,
+                'short-video': `<div style="margin-bottom: 12px;"><p style="color: #94a3b8; font-size: 13px; margin-bottom: 8px;">请输入抖音/快手用户主页链接，例如：https://v.douyin.com/xxx</p></div><div style="display: flex; gap: 8px; margin-bottom: 16px;"><button onclick="setPlatform('douyin')" id="douyinBtn" class="btn btn-primary" style="flex: 1;">抖音</button><button onclick="setPlatform('kuaishou')" id="kuaishouBtn" class="btn btn-secondary" style="flex: 1;">快手</button></div><div style="display: flex; gap: 12px; margin-bottom: 16px;"><input type="text" id="videoInput" class="input-field" placeholder="输入用户主页链接..." style="flex: 1;"><button onclick="parseVideo()" class="btn btn-primary">解析</button></div><div id="videoResults"></div>`,
+                'qrcode': `<div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">二维码内容</label><input type="text" id="qrText" class="input-field" placeholder="输入链接或文本..."></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;"><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">尺寸</label><select id="qrSize" class="input-field"><option value="150">150x150</option><option value="200" selected>200x200</option><option value="300">300x300</option><option value="400">400x400</option></select></div><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">颜色</label><input type="color" id="qrColor" value="#000000" class="input-field" style="height: 42px; padding: 4px;"></div></div><button onclick="genQR()" class="btn btn-primary" style="width: 100%;"><i class="fas fa-qrcode" style="margin-right: 8px;"></i>生成二维码</button><div id="qrResult" style="text-align: center; margin-top: 16px;"></div>`,
                 'daily-hot': `<div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">选择平台</label><select id="hotPlatform" class="input-field" onchange="loadHotList()"><option value="">加载中...</option></select></div><div id="hotResults" style="max-height: 400px; overflow-y: auto;"></div>`,
                 'ssl-check': `<div style="display: flex; gap: 12px; margin-bottom: 16px;"><input type="text" id="sslDomain" class="input-field" placeholder="输入域名 (如: google.com)" style="flex: 1;"><button onclick="checkSSL()" class="btn btn-primary">查询</button></div><div id="sslResult"></div>`,
-                'text-dub': `<div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">输入文本</label><textarea id="dubText" class="input-field" style="height: 100px; resize: none;" placeholder="输入要转换的文本..."></textarea></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;"><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">音色</label><select id="dubRole" class="input-field"><option value="">加载中...</option></select></div><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">风格</label><select id="dubStyle" class="input-field"><option value="cheerful">愉快</option></select></div></div><button onclick="genDub()" class="btn btn-primary" style="width: 100%;"><i class="fas fa-microphone" style="margin-right: 8px;"></i>生成语音</button><div id="dubResult" style="margin-top: 16px;"></div>`,
+                'text-dub': `<div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">输入文本</label><textarea id="dubText" class="input-field" style="height: 100px; resize: none;" placeholder="输入要转换的文本..."></textarea></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;"><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">音色</label><select id="dubVoice" class="input-field"><option value="">加载中...</option></select></div><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">风格</label><select id="dubStyle" class="input-field"><option value="">默认</option></select></div></div><button onclick="genDub()" class="btn btn-primary" style="width: 100%;"><i class="fas fa-microphone" style="margin-right: 8px;"></i>生成语音</button><div id="dubResult" style="margin-top: 16px;"></div>`,
                 'audio-ocr': `<div onclick="document.getElementById('audioFile').click()" style="border: 2px dashed #334155; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; margin-bottom: 16px;"><input type="file" id="audioFile" accept="audio/*" style="display: none;" onchange="handleAudio(this)"><i class="fas fa-cloud-upload-alt" style="font-size: 36px; color: #64748b; margin-bottom: 12px;"></i><p style="color: #94a3b8;">点击上传音频文件</p><p style="color: #64748b; font-size: 12px; margin-top: 4px;">支持 MP3、WAV、M4A</p></div><div id="audioName" style="color: #94a3b8; font-size: 14px; margin-bottom: 12px;"></div><button onclick="convertAudio()" class="btn btn-success" style="width: 100%;"><i class="fas fa-file-audio" style="margin-right: 8px;"></i>开始识别</button><div id="audioResult" style="margin-top: 16px;"></div>`,
                 'json-format': `<div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">输入 JSON</label><textarea id="jsonInput" class="input-field" style="height: 150px; font-family: monospace; resize: none;" placeholder='{"key": "value"}'></textarea></div><div style="display: flex; gap: 8px; margin-bottom: 16px;"><button onclick="fmtJson()" class="btn btn-primary">格式化</button><button onclick="cmpJson()" class="btn btn-secondary">压缩</button><button onclick="valJson()" class="btn btn-secondary">验证</button></div><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">输出结果</label><textarea id="jsonOutput" class="input-field" style="height: 150px; font-family: monospace; resize: none; color: #10b981;" readonly></textarea></div>`,
                 'base64': `<div style="display: flex; gap: 8px; margin-bottom: 16px;"><button onclick="setB64Mode('encode')" id="encodeBtn" class="btn btn-primary" style="flex: 1;">编码</button><button onclick="setB64Mode('decode')" id="decodeBtn" class="btn btn-secondary" style="flex: 1;">解码</button></div><div style="margin-bottom: 16px;"><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">输入内容</label><textarea id="b64Input" class="input-field" style="height: 100px; font-family: monospace; resize: none;"></textarea></div><button onclick="procB64()" class="btn btn-primary" style="width: 100%; margin-bottom: 16px;">开始处理</button><div><label style="display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8;">输出结果</label><textarea id="b64Output" class="input-field" style="height: 100px; font-family: monospace; resize: none; color: #10b981;" readonly></textarea></div>`,
@@ -276,6 +276,7 @@
             return contents[id] || '<div style="text-align: center; padding: 40px; color: #64748b;">开发中...</div>';
         }
 
+        // QQ音乐
         let musicList = [];
         async function searchMusic() {
             const q = document.getElementById('musicInput').value.trim();
@@ -288,7 +289,7 @@
                     musicList = d.data.list;
                     document.getElementById('musicResults').innerHTML = musicList.map((s, i) => `<div onclick="showMusic(${i})" style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'"><div style="width: 32px; height: 32px; border-radius: 6px; background: #334155; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px; font-weight: 600;">${i + 1}</div><div style="flex: 1; min-width: 0;"><div style="color: white; font-weight: 500; margin-bottom: 2px;">${s.name}</div><div style="color: #64748b; font-size: 13px;">${s.singer}</div></div><div style="color: #64748b; font-size: 13px;">${Math.floor(s.interval/60)}:${(s.interval%60).toString().padStart(2,'0')}</div></div>`).join('');
                 } else showError('musicResults', d.msg || '搜索失败');
-            } catch (e) { showError('musicResults', '网络错误'); }
+            } catch (e) { showError('musicResults', '网络错误: ' + e.message); }
         }
         function showMusic(i) {
             const s = musicList[i];
@@ -299,10 +300,10 @@
             try {
                 const r = await fetch(`${API_BASE}/qq_music?action=url&songmid=${mid}`);
                 const d = await r.json();
-                if (d.code === 0 && d.data) {
-                    document.getElementById('musicDetail').innerHTML = `<div style="padding: 12px; background: #1e293b; border-radius: 8px;"><div style="color: #94a3b8; font-size: 12px; margin-bottom: 8px;">播放链接：</div><audio controls src="${d.data}" style="width: 100%;"></audio></div>`;
+                if (d.code === 0 && d.data?.music_url) {
+                    document.getElementById('musicDetail').innerHTML = `<div style="padding: 12px; background: #1e293b; border-radius: 8px;"><div style="color: #94a3b8; font-size: 12px; margin-bottom: 8px;">播放链接：</div><audio controls src="${d.data.music_url}" style="width: 100%;"></audio></div>`;
                 } else showError('musicDetail', d.msg || '获取失败');
-            } catch (e) { showError('musicDetail', '网络错误'); }
+            } catch (e) { showError('musicDetail', '网络错误: ' + e.message); }
         }
         async function getMusicLyric(mid) {
             showLoading('musicDetail');
@@ -312,9 +313,10 @@
                 if (d.code === 0 && d.data) {
                     document.getElementById('musicDetail').innerHTML = `<div style="padding: 12px; background: #1e293b; border-radius: 8px; max-height: 200px; overflow-y: auto;"><pre style="color: #94a3b8; font-size: 12px; white-space: pre-wrap; margin: 0;">${d.data}</pre></div>`;
                 } else showError('musicDetail', d.msg || '获取失败');
-            } catch (e) { showError('musicDetail', '网络错误'); }
+            } catch (e) { showError('musicDetail', '网络错误: ' + e.message); }
         }
 
+        // 短视频
         let platform = 'douyin';
         function setPlatform(p) {
             platform = p;
@@ -323,7 +325,7 @@
         }
         async function parseVideo() {
             const url = document.getElementById('videoInput').value.trim();
-            if (!url) return alert('请输入分享链接');
+            if (!url) return alert('请输入用户主页链接');
             showLoading('videoResults');
             try {
                 const r = await fetch(`${API_BASE}/short_video?platform=${platform}&user_id=${encodeURIComponent(url)}&type=all`);
@@ -340,34 +342,37 @@
                         });
                         html += '</div>';
                     }
-                    document.getElementById('videoResults').innerHTML = html;
+                    document.getElementById('videoResults').innerHTML = html || '<div style="text-align: center; padding: 20px; color: #94a3b8;">未获取到数据</div>';
                 } else showError('videoResults', d.msg || '解析失败');
-            } catch (e) { showError('videoResults', '网络错误'); }
+            } catch (e) { showError('videoResults', '网络错误: ' + e.message); }
         }
 
+        // 二维码 - 使用公开API
         async function genQR() {
             const text = document.getElementById('qrText').value.trim();
             if (!text) return alert('请输入内容');
-            const style = document.getElementById('qrStyle').value;
             const size = document.getElementById('qrSize').value;
+            const color = document.getElementById('qrColor').value.replace('#', '');
             showLoading('qrResult');
             try {
-                const r = await fetch(`${API_BASE}/qrcode?text=${encodeURIComponent(text)}&style=${style}&size=${size}&output=base64`);
-                const d = await r.json();
-                if (d.code === 0 && d.data) {
-                    document.getElementById('qrResult').innerHTML = `<img src="${d.data}" style="max-width: 100%; border-radius: 8px;"><br><a href="${d.data}" download class="btn btn-secondary" style="margin-top: 12px;"><i class="fas fa-download" style="margin-right: 6px;"></i>下载</a>`;
-                } else document.getElementById('qrResult').innerHTML = `<p style="color: #ef4444;">${d.msg || '生成失败'}</p>`;
-            } catch (e) { document.getElementById('qrResult').innerHTML = '<p style="color: #ef4444;">网络错误</p>'; }
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}&color=${color}&bgcolor=ffffff`;
+                document.getElementById('qrResult').innerHTML = `<img src="${qrUrl}" style="max-width: 100%; border-radius: 8px;"><br><a href="${qrUrl}" download="qrcode.png" class="btn btn-secondary" style="margin-top: 12px;"><i class="fas fa-download" style="margin-right: 6px;"></i>下载</a>`;
+            } catch (e) { 
+                document.getElementById('qrResult').innerHTML = '<p style="color: #ef4444;">生成失败: ' + e.message + '</p>'; 
+            }
         }
 
+        // 今日热榜
         async function loadHotPlatforms() {
             try {
                 const r = await fetch(`${API_BASE2}/dailyhot/`);
                 const d = await r.json();
-                if (d.code === 200 && d.data) {
-                    document.getElementById('hotPlatform').innerHTML = '<option value="">选择平台</option>' + d.data.map(i => `<option value="${i.title}">${i.title}</option>`).join('');
+                if (d.code === 200 && d.data?.platforms) {
+                    document.getElementById('hotPlatform').innerHTML = '<option value="">选择平台</option>' + d.data.platforms.map(p => `<option value="${p}">${p}</option>`).join('');
                 }
-            } catch (e) {}
+            } catch (e) {
+                document.getElementById('hotPlatform').innerHTML = '<option value="">加载失败</option>';
+            }
         }
         async function loadHotList() {
             const p = document.getElementById('hotPlatform').value;
@@ -379,9 +384,10 @@
                 if (d.code === 200 && d.data?.data) {
                     document.getElementById('hotResults').innerHTML = d.data.data.map((item, i) => `<a href="${item.url}" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; transition: background 0.2s; text-decoration: none;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'"><div style="width: 24px; height: 24px; border-radius: 4px; background: ${i < 3 ? 'linear-gradient(135deg, #f97316, #ef4444)' : '#334155'}; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">${i + 1}</div><div style="flex: 1; color: #e2e8f0; font-size: 14px;">${item.title}</div>${item.hot ? `<div style="color: #f97316; font-size: 12px;"><i class="fas fa-fire"></i> ${item.hot}</div>` : ''}</a>`).join('');
                 } else showError('hotResults', '获取失败');
-            } catch (e) { showError('hotResults', '网络错误'); }
+            } catch (e) { showError('hotResults', '网络错误: ' + e.message); }
         }
 
+        // SSL
         async function checkSSL() {
             const domain = document.getElementById('sslDomain').value.trim();
             if (!domain) return alert('请输入域名');
@@ -390,34 +396,51 @@
                 const r = await fetch(`${API_BASE2}/ssl/?domain=${encodeURIComponent(domain)}`);
                 const d = await r.json();
                 if (d.code === 200 && d.data) {
-                    document.getElementById('sslResult').innerHTML = `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; background: #1e293b; border-radius: 12px;"><div><div style="color: #64748b; font-size: 12px;">主域名</div><div style="color: white;">${d.data.subject || '-'}</div></div><div><div style="color: #64748b; font-size: 12px;">签发机构</div><div style="color: white;">${d.data.issuer_organization || '-'}</div></div><div><div style="color: #64748b; font-size: 12px;">有效期</div><div style="color: white; font-size: 12px;">${d.data.valid_from || '-'}</div></div><div><div style="color: #64748b; font-size: 12px;">签名算法</div><div style="color: white;">${d.data.signature_algorithm || '-'}</div></div></div>`;
+                    document.getElementById('sslResult').innerHTML = `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; background: #1e293b; border-radius: 12px;"><div><div style="color: #64748b; font-size: 12px;">主域名</div><div style="color: white;">${d.data.maindomain || '-'}</div></div><div><div style="color: #64748b; font-size: 12px;">签发机构</div><div style="color: white;">${d.data.issuerorg || '-'}</div></div><div><div style="color: #64748b; font-size: 12px;">有效期</div><div style="color: white; font-size: 12px;">${d.data.starttime || '-'} 至 ${d.data.endtime || '-'}</div></div><div><div style="color: #64748b; font-size: 12px;">状态</div><div style="color: ${d.data.valid === '证书有效' ? '#10b981' : '#ef4444'};">${d.data.valid || '-'}</div></div></div>`;
                 } else showError('sslResult', d.msg || '查询失败');
-            } catch (e) { showError('sslResult', '网络错误'); }
+            } catch (e) { showError('sslResult', '网络错误: ' + e.message); }
         }
 
-        async function loadDubRoles() {
+        // 配音
+        async function loadDubVoices() {
             try {
                 const r = await fetch(`${API_BASE2}/freedub`);
                 const d = await r.json();
-                if (d.code === 200 && d.data?.roles) {
-                    document.getElementById('dubRole').innerHTML = d.data.roles.map(r => `<option value="${r.value}">${r.name}</option>`).join('');
-                    if (d.data.styles) document.getElementById('dubStyle').innerHTML = d.data.styles.map(s => `<option value="${s.value}">${s.name}</option>`).join('');
+                if (d.code === 200 && d.data?.voicelist) {
+                    const voices = d.data.voicelist;
+                    const styles = d.data.stylelist || {};
+                    let voiceOptions = '';
+                    for (const [key, name] of Object.entries(voices)) {
+                        voiceOptions += `<option value="${key}">${name}</option>`;
+                    }
+                    document.getElementById('dubVoice').innerHTML = voiceOptions;
+                    
+                    let styleOptions = '<option value="">默认</option>';
+                    for (const [key, name] of Object.entries(styles)) {
+                        styleOptions += `<option value="${key}">${name}</option>`;
+                    }
+                    document.getElementById('dubStyle').innerHTML = styleOptions;
                 }
-            } catch (e) {}
+            } catch (e) {
+                document.getElementById('dubVoice').innerHTML = '<option value="">加载失败</option>';
+            }
         }
         async function genDub() {
             const text = document.getElementById('dubText').value.trim();
             if (!text) return alert('请输入文本');
             showLoading('dubResult');
             try {
-                const r = await fetch(`${API_BASE2}/freedub?text=${encodeURIComponent(text)}&role=${document.getElementById('dubRole').value}&style=${document.getElementById('dubStyle').value}`);
+                const voice = document.getElementById('dubVoice').value;
+                const style = document.getElementById('dubStyle').value;
+                const r = await fetch(`${API_BASE2}/freedub?text=${encodeURIComponent(text)}&role=${voice}&style=${style}`);
                 const d = await r.json();
-                if (d.code === 200 && d.data) {
+                if (d.code === 200 && d.data?.audio_url) {
                     document.getElementById('dubResult').innerHTML = `<div style="padding: 12px; background: #1e293b; border-radius: 8px;"><div style="color: #94a3b8; font-size: 12px; margin-bottom: 8px;">语音已生成：</div><audio controls src="${d.data.audio_url}" style="width: 100%;"></audio></div>`;
                 } else showError('dubResult', d.msg || '生成失败');
-            } catch (e) { showError('dubResult', '网络错误'); }
+            } catch (e) { showError('dubResult', '网络错误: ' + e.message); }
         }
 
+        // 音频转文本
         let audioFile = null;
         function handleAudio(input) {
             if (input.files?.[0]) {
@@ -434,25 +457,31 @@
                 const r = await fetch(`${API_BASE2}/audiocr/`, { method: 'POST', body: fd });
                 const d = await r.json();
                 if (d.code === 200 && d.data) {
-                    document.getElementById('audioResult').innerHTML = `<div style="padding: 12px; background: #1e293b; border-radius: 8px;"><div style="color: #94a3b8; font-size: 12px; margin-bottom: 8px;">识别结果：</div><div style="color: #e2e8f0;">${d.data.content || d.data}</div></div>`;
+                    const content = d.data.content || d.data;
+                    document.getElementById('audioResult').innerHTML = `<div style="padding: 12px; background: #1e293b; border-radius: 8px;"><div style="color: #94a3b8; font-size: 12px; margin-bottom: 8px;">识别结果：</div><div style="color: #e2e8f0;">${content}</div></div>`;
                 } else showError('audioResult', d.msg || '识别失败');
-            } catch (e) { showError('audioResult', '网络错误'); }
+            } catch (e) { showError('audioResult', '网络错误: ' + e.message); }
         }
 
+        // JSON
         function fmtJson() { try { document.getElementById('jsonOutput').value = JSON.stringify(JSON.parse(document.getElementById('jsonInput').value), null, 2); } catch (e) { document.getElementById('jsonOutput').value = '错误: ' + e.message; } }
         function cmpJson() { try { document.getElementById('jsonOutput').value = JSON.stringify(JSON.parse(document.getElementById('jsonInput').value)); } catch (e) { document.getElementById('jsonOutput').value = '错误: ' + e.message; } }
         function valJson() { try { JSON.parse(document.getElementById('jsonInput').value); document.getElementById('jsonOutput').value = '✓ JSON 格式正确'; } catch (e) { document.getElementById('jsonOutput').value = '✗ 错误: ' + e.message; } }
 
+        // Base64
         let b64Mode = 'encode';
         function setB64Mode(m) { b64Mode = m; document.getElementById('encodeBtn').className = m === 'encode' ? 'btn btn-primary' : 'btn btn-secondary'; document.getElementById('decodeBtn').className = m === 'decode' ? 'btn btn-primary' : 'btn btn-secondary'; }
         function procB64() { try { document.getElementById('b64Output').value = b64Mode === 'encode' ? btoa(unescape(encodeURIComponent(document.getElementById('b64Input').value))) : decodeURIComponent(escape(atob(document.getElementById('b64Input').value))); } catch (e) { document.getElementById('b64Output').value = '错误: ' + e.message; } }
 
+        // 时间戳
         function updateTs() { const n = Date.now(); document.getElementById('tsNow').value = Math.floor(n / 1000); document.getElementById('tsNowMs').value = n; }
         function ts2Date() { const t = document.getElementById('tsToDate').value; if (!t) return; const d = new Date(parseInt(t) * (t.length === 10 ? 1000 : 1)); document.getElementById('dateResult').value = d.toLocaleString('zh-CN'); }
         function date2Ts() { const d = document.getElementById('dateToTs').value; if (!d) return; const t = new Date(d).getTime(); document.getElementById('tsResult').value = '秒: ' + Math.floor(t / 1000) + ' | 毫秒: ' + t; }
 
+        // UUID
         function genUUID() { const n = Math.min(parseInt(document.getElementById('uuidCount').value) || 5, 100); const arr = []; for (let i = 0; i < n; i++) arr.push(crypto.randomUUID()); document.getElementById('uuidOutput').value = arr.join('\n'); }
 
+        // Hash
         async function genHash() {
             const text = document.getElementById('hashInput').value;
             if (!text) return alert('请输入文本');
@@ -464,6 +493,7 @@
             document.getElementById('hashSHA256').value = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data))).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        // 分类按钮
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
@@ -472,13 +502,16 @@
             });
         });
 
+        // 搜索
         document.getElementById('searchInput').addEventListener('input', e => {
             const cat = document.querySelector('.category-btn.active')?.dataset.category || 'all';
             renderTools(cat, e.target.value);
         });
 
+        // ESC关闭
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+        // 初始化
         renderTools();
         setInterval(updateTs, 1000);
     </script>
